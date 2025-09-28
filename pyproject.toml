@@ -1,0 +1,25 @@
+[project]
+name = "bettergit"
+version = "1.0.0"
+description = "BetterGit is a conversational CLI wrapper for Git that encourages Conventional Commits."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "typer>=0.9",
+  "rich>=13.0",
+  "typing-extensions>=4.6; python_version < '3.11'"
+]
+
+[project.scripts]
+bg = "bettergit.cli.main:run"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["bettergit*"]
