@@ -1,6 +1,6 @@
 [project]
 name = "bettergit"
-version = "1.0.1"
+version = "2.0.0"
 description = "BetterGit is a conversational CLI wrapper for Git that encourages Conventional Commits."
 readme = "README.md"
 requires-python = ">=3.10"
