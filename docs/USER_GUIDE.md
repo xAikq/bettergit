@@ -39,7 +39,7 @@ BetterGit (`bg`) is a productivity layer on top of Git. It keeps everyday tasks 
 ### Install from GitHub with pip
 
 ```bash
-pip install --upgrade git+https://github.com/xAikq/bettergit.git@main
+pip install --upgrade bettergit
 ```
 
 This pulls the latest commit from the `main` branch. Swap `main` for another branch or tag if needed.
@@ -183,7 +183,7 @@ bg delete-branch feature/payments --remote-delete
 ## Updating BetterGit
 
 ```bash
-pip install --upgrade git+https://github.com/xAikq/bettergit.git@main
+pip install --upgrade bettergit
 ```
 
 For an editable install, pull the latest changes (`git pull`) and reinstall if needed (`pip install -e . --upgrade`).

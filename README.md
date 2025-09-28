@@ -14,10 +14,7 @@ BetterGit is a lightweight command-line companion for Git. It streamlines daily 
 ## Quick install
 
 ```bash
-# install straight from GitHub
-pip install --upgrade git+https://github.com/xAikq/bettergit.git@main
-
-# verify
+pip install --upgrade bettergit
 bg --help
 ```
 
