@@ -54,7 +54,7 @@ def ensure_staged_changes_or_exit() -> str:
     diff = gitio.get_staged_diff()
     if not diff.strip():
         typer.secho(
-            "[ERR] no staged changes. Run `git add ...` and try again.",
+            "[ERR] no staged changes. Run `bg add ...` and try again.",
             fg=typer.colors.RED,
             err=True,
         )

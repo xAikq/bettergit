@@ -18,16 +18,22 @@ def register(app: typer.Typer) -> None:
         config_path: str | None = typer.Option(None, "--config", "-c", help="Path to a configuration file."),
     ) -> None:
         resolve_config(config_path)
+        branch_name = branch
+        if branch_name is None:
+            try:
+                branch_name = gitio.current_branch()
+            except GitError as exc:
+                show_error("push", "(current)", str(exc))
+                raise typer.Exit(code=1)
+            
         try:
             upstream_set = gitio.push(remote=remote, branch=branch, set_upstream=not no_set_upstream)
         except GitError as exc:
-            target = branch or gitio.current_branch()
-            show_error("push", f"{remote}/{target}", str(exc))
+            show_error("push", f"{remote}/{branch_name}", str(exc))
             raise typer.Exit(code=1)
 
-        name = branch or gitio.current_branch()
         note = "upstream set" if upstream_set else None
-        show_success("push", f"{remote}/{name}", note)
+        show_success("push", f"{remote}/{branch_name}", note)
 
     @app.command("push-to", help="Push the specified branch to a remote without switching.")
     def push_to_cmd(
@@ -40,8 +46,8 @@ def register(app: typer.Typer) -> None:
         try:
             upstream_set = gitio.push(remote=remote, branch=branch, set_upstream=not no_set_upstream)
         except GitError as exc:
-            show_error("push", f"{remote}/{branch}", str(exc))
+            show_error("push-to", f"{remote}/{branch}", str(exc))
             raise typer.Exit(code=1)
 
         note = "upstream set" if upstream_set else None
-        show_success("push", f"{remote}/{branch}", note)
+        show_success("push-to", f"{remote}/{branch}", note)
