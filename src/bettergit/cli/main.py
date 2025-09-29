@@ -44,7 +44,7 @@ HELP_TEXT = textwrap.dedent(
 
     ----------------------------------------------------------------------
     Branch Management
-      bg branches       List local branches (add --all/-a for remotes).
+      bg branches       Grouped, color-coded view for current, standalone, derived, and remote branches (add --all/-a for remotes).
       bg branch-info    Ahead/behind stats, tracking target, last commit snapshot.
       bg switch         Checkout another branch.
       bg create-branch  Start from HEAD by default; can switch automatically.

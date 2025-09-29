@@ -3,6 +3,7 @@ from __future__ import annotations
 import typer
 
 from bettergit.cli.utils import resolve_config, show_error, show_success
+from bettergit.core import branchmeta
 from bettergit.core import gitio
 from bettergit.core.gitio import GitError
 
@@ -31,6 +32,7 @@ def register(app: typer.Typer) -> None:
                 checkout=not no_switch,
                 force=force,
             )
+            branchmeta.record_origin(branch, start_point)
         except GitError as exc:
             show_error("create-branch", branch, str(exc))
             raise typer.Exit(code=1)

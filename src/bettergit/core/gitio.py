@@ -21,6 +21,7 @@ __all__ = [
     "has_upstream",
     "list_branches",
     "push",
+    "remote_branch_exists",
 ]
 
 _GIT_PREFIX: list[str] = [
@@ -224,3 +225,12 @@ def push(remote: str = "origin", branch: str | None = None, set_upstream: bool =
     args.extend([remote, ref])
     _run_git(args)
     return needs_upstream
+
+
+
+def remote_branch_exists(remote: str = "origin", branch: str | None = None) -> bool:
+    """Return True if *branch* exists on *remote*."""
+
+    ref = branch or current_branch()
+    output = _run_git(["ls-remote", "--heads", remote, ref])
+    return bool(output.strip())

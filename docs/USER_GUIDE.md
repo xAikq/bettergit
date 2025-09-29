@@ -126,7 +126,7 @@ The `--llm` / `--no-llm` toggles override the default model usage for the curren
 Skips the interactive step and commits immediately after the message is generated. Ideal for automation or when you already trust the suggestion.
 
 ### `bg branches`
-Lists branches, marking the current one with `*`. Include `--all/-a` to show remote branches.
+Groups branches by category, marking the current one with `*` and highlighting local standalone branches, remote branches, remote HEAD pointers, and branches created via `bg create-branch --from`; derived branches also show their parent. Include `--all/-a` to show remote branches.
 
 ### `bg branch-info`
 Reports the upstream reference, ahead/behind counts, and the last commit (SHA, author, date, title). Use `--branch/-b` to inspect a non-current branch.

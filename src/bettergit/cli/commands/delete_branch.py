@@ -3,7 +3,7 @@ from __future__ import annotations
 import typer
 
 from bettergit.cli.utils import resolve_config, show_error, show_success, style_prompt
-from bettergit.core import gitio
+from bettergit.core import gitio, branchmeta
 from bettergit.core.gitio import GitError
 
 
@@ -29,6 +29,8 @@ def register(app: typer.Typer) -> None:
             show_error("delete-branch", branch, str(exc))
             raise typer.Exit(code=1)
 
+        branchmeta.record_origin(branch, None)
+
         note_parts = ["local"]
         if force:
             note_parts.append("force")
@@ -41,10 +43,13 @@ def register(app: typer.Typer) -> None:
 
         if should_delete_remote:
             try:
-                gitio.delete_remote_branch(remote=remote, branch=branch)
+                if not gitio.remote_branch_exists(remote=remote, branch=branch):
+                    typer.secho(f"Remote branch {remote}/{branch} already absent; nothing to delete.", fg=typer.colors.YELLOW)
+                else:
+                    gitio.delete_remote_branch(remote=remote, branch=branch)
+                    show_success("delete-branch", f"{remote}/{branch}", "remote")
             except GitError as exc:
                 show_error("delete-branch", f"{remote}/{branch}", str(exc))
                 raise typer.Exit(code=1)
-            show_success("delete-branch", f"{remote}/{branch}", "remote")
         elif not no_prompt:
             typer.secho("Remote branch kept.", fg=typer.colors.YELLOW)
