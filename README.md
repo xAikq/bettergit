@@ -7,6 +7,7 @@ BetterGit is a lightweight command-line companion for Git. It streamlines daily 
 - Message generation via `bg suggest` (interactive) and `bg commit` (one-shot).
 - Staging shortcuts: `bg add` for everything or selected paths.
 - Branch utilities: `bg branches`, `bg branch-info`, `bg switch`, `bg create-branch`, `bg delete-branch`.
+- Tag utilities: `bg tag` to review tags, `bg create-tag` to add new ones, `bg delete-tag` to clean up.
 - Simple pushes: `bg push` for the current branch, `bg push-to` for any branch without switching.
 - Interactive branch deletion that asks whether to drop the remote copy as well.
 - Rich top-level help (`bg --help`) that doubles as a quick reference.

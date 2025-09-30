@@ -1,5 +1,9 @@
 # BetterGit Release Notes
 
+## v2.1.0 (2025-10-01)
+- Added tag management commands (`bg tag`, `bg create-tag`, `bg delete-tag`) to streamline release workflows.
+- `bg create-tag` now accepts an optional positional message to create annotated tags without extra flags.
+
 ## v2.0.2 (2025-09-29)
 - `bg branches` now shows all available branches (highlighting is also implemented).
 
