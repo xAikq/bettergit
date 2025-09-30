@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import textwrap
 
@@ -15,6 +15,9 @@ from bettergit.cli.commands.delete_branch import register as register_delete_bra
 from bettergit.cli.commands.push import register as register_push
 from bettergit.cli.commands.suggest import register as register_suggest
 from bettergit.cli.commands.switch import register as register_switch
+from bettergit.cli.commands.tag import register as register_tag
+from bettergit.cli.commands.create_tag import register as register_create_tag
+from bettergit.cli.commands.delete_tag import register as register_delete_tag
 
 HELP_TEXT = textwrap.dedent(
     """
@@ -137,6 +140,9 @@ register_branch_info(app)
 register_push(app)
 register_create_branch(app)
 register_delete_branch(app)
+register_tag(app)
+register_create_tag(app)
+register_delete_tag(app)
 
 
 def run() -> None:

@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Iterable, Sequence
@@ -22,6 +22,9 @@ __all__ = [
     "list_branches",
     "push",
     "remote_branch_exists",
+    "tag",
+    "crete_tag",
+    "delete_tag",
 ]
 
 _GIT_PREFIX: list[str] = [
@@ -234,3 +237,25 @@ def remote_branch_exists(remote: str = "origin", branch: str | None = None) -> b
     ref = branch or current_branch()
     output = _run_git(["ls-remote", "--heads", remote, ref])
     return bool(output.strip())
+
+
+def tag() -> str:
+    """Shows all tags."""
+
+    output = _run_git(["tag"])
+    return output
+
+
+def create_tag(name: str, message: str | None = None) -> None:
+    """Create tag with a given name, optionally with message."""
+
+    if message is not None:
+        _run_git(["tag", "-a", name, "-m", message])
+    else:
+        _run_git(["tag", name])
+
+
+def delete_tag(name: str) -> None:
+    """Delete tag."""
+
+    _run_git(["tag", "-d", name])
