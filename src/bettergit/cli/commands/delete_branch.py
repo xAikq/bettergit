@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import typer
 
@@ -53,3 +53,22 @@ def register(app: typer.Typer) -> None:
                 raise typer.Exit(code=1)
         elif not no_prompt:
             typer.secho("Remote branch kept.", fg=typer.colors.YELLOW)
+
+    @app.command(
+        "delete-remote-branch",
+        help="Delete a remote branch.",
+    )
+    def delete_remote_branch_cmd(
+        branch: str = typer.Argument(..., help="Name of the branch to delete."),
+        remote: str = typer.Option("origin", "--remote", "-r", help="Remote name used for deletion."),
+        config_path: str | None = typer.Option(None, "--config", "-c", help="Path to a configuration file."),
+    ) -> None:
+        resolve_config(config_path)
+        try:
+            gitio.delete_remote_branch(remote, branch)
+        except GitError as exc:
+            show_error("delete-remote-branch", branch, str(exc))
+            raise typer.Exit(code=1)
+        show_success("delete-remote-branch", branch)
+        
+        
