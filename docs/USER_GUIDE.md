@@ -19,6 +19,7 @@ BetterGit (`bg`) is a productivity layer on top of Git. It keeps everyday tasks 
   - [`bg switch`](#bg-switch)
   - [`bg create-branch`](#bg-create-branch)
   - [`bg delete-branch`](#bg-delete-branch)
+  - [`bg delete-remote-branch`](#bg-delete-remote-branch)
   - [`bg push`](#bg-push)
   - [`bg push-to`](#bg-push-to)
   - [`bg tag`](#bg-tag)
@@ -97,7 +98,7 @@ BetterGit can ask an LLM to draft commit messages. By default we talk to [Ollama
 1. Stage your changes with `bg add` (all files) or `bg add path/to/file.py` (selection).
 2. Run `bg suggest`, review or edit the proposed message, confirm with `c` to commit.
 3. Publish the branch with `bg push`. On the first run the command adds `-u origin <branch>` automatically.
-4. Clean up merged branches with `bg delete-branch feature/foo --remote-delete` to remove both local and remote copies.
+4. Clean up merged branches with `bg delete-branch feature/foo --remote-delete` to remove both local and remote copies. If the local branch is already gone, use `bg delete-remote-branch feature/foo` to clean up the remote.
 
 ## Command cheat sheet
 
@@ -111,6 +112,7 @@ BetterGit can ask an LLM to draft commit messages. By default we talk to [Ollama
 | `bg switch`        | Check out another branch                                 | `--config/-c` |
 | `bg create-branch` | Create a branch, optionally switch/overwrite             | `--from/-f`, `--no-switch`, `--force/-F`, `--config/-c` |
 | `bg delete-branch` | Delete a local branch and optionally the remote copy     | `--remote/-r`, `--remote-delete`, `--no-prompt`, `--force/-F`, `--config/-c` |
+| `bg delete-remote-branch` | Delete the remote branch without touching the local copy | `--remote/-r`, `--config/-c` |
 | `bg push`          | Push the current or selected branch                      | `--branch/-b`, `--remote/-r`, `--no-set-upstream`, `--config/-c` |
 | `bg push-to`       | Push any branch without switching                        | `--remote/-r`, `--no-set-upstream`, `--config/-c` |
 | `bg tag`           | List existing tags                                       | `--config/-c` |
@@ -155,6 +157,9 @@ Deletes the local branch with `git branch -d` or `-D` (when `--force` is set). A
 - `--no-prompt` - skip the question and keep the remote branch
 - `--remote/-r` - choose a remote other than `origin`
 
+### `bg delete-remote-branch`
+Deletes the branch directly on the selected remote without touching your local copy. Use it to clean up remote refs after the local branch is already gone. Combine with `--remote/-r` to target a remote other than `origin`.
+
 ### `bg push`
 Pushes the current branch (or one supplied via `--branch/-b`). When the branch does not have an upstream yet, BetterGit sends `git push -u <remote> <branch>` unless you provide `--no-set-upstream`.
 
@@ -190,7 +195,7 @@ bg push
 # ... merge the branch / open a PR ...
 bg delete-branch feature/payments --remote-delete
 ```
-`bg delete-branch` first removes the local branch, then runs `git push origin --delete feature/payments` (or another remote if you used `--remote`).
+`bg delete-branch` first removes the local branch, then runs `git push origin --delete feature/payments` (or another remote if you used `--remote`). Use `bg delete-remote-branch feature/payments` when only the remote ref remains.
 
 ### Release tagging
 ```bash
@@ -220,5 +225,5 @@ For an editable install, pull the latest changes (`git pull`) and reinstall if n
 ## Troubleshooting
 - **"bg" not found** - make sure the right virtual environment is active or reinstall the package.
 - **AI request fails** - verify that your Ollama (or another provider) instance accepts requests at the configured URL, or add `--no-llm`.
-- **Remote branch still exists** - rerun `bg delete-branch feature/foo --remote-delete` or manually push `git push origin --delete feature/foo`.
+- **Remote branch still exists** - rerun `bg delete-branch feature/foo --remote-delete`, call `bg delete-remote-branch feature/foo`, or manually push `git push origin --delete feature/foo`.
 - **Prefer raw Git output** - you can always drop back to Git directly; BetterGit surfaces Git error messages without masking them.
