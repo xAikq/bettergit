@@ -1,5 +1,9 @@
 # BetterGit Release Notes
 
+## v2.1.3 (2025-10-02)
+- Added `bg delete-remote-branch` for remote-only branch cleanup.
+- Bumped the package version to 2.1.3 and refreshed documentation for the new command.
+
 ## v2.1.2 (2025-10-02)
 - `bg branches` is now `bg branch`.
 - Fixed misspelling of `create-tag` in `bettergit.core.gitio`.
