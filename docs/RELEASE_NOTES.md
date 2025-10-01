@@ -1,5 +1,10 @@
 # BetterGit Release Notes
 
+## v2.1.1 (2025-10-02)
+- `bg create-tag` now asks whether to push the new tag to the selected remote (defaults to `origin`).
+- `bg delete-tag` detects matching remote tags, offers to delete them, and respects `--remote/-r`.
+- Added `bg delete-remote-tag` for direct remote tag cleanup plus supporting helpers in `bettergit.core.gitio`.
+
 ## v2.1.0 (2025-10-01)
 - Added tag management commands (`bg tag`, `bg create-tag`, `bg delete-tag`) to streamline release workflows.
 - `bg create-tag` now accepts an optional positional message to create annotated tags without extra flags.

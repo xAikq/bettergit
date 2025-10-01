@@ -24,6 +24,7 @@ BetterGit (`bg`) is a productivity layer on top of Git. It keeps everyday tasks 
   - [`bg tag`](#bg-tag)
   - [`bg create-tag`](#bg-create-tag)
   - [`bg delete-tag`](#bg-delete-tag)
+  - [`bg delete-remote-tag`](#bg-delete-remote-tag)
 - [Typical workflows](#typical-workflows)
   - [Commit from start to finish](#commit-from-start-to-finish)
   - [Branch lifecycle](#branch-lifecycle)
@@ -113,8 +114,9 @@ BetterGit can ask an LLM to draft commit messages. By default we talk to [Ollama
 | `bg push`          | Push the current or selected branch                      | `--branch/-b`, `--remote/-r`, `--no-set-upstream`, `--config/-c` |
 | `bg push-to`       | Push any branch without switching                        | `--remote/-r`, `--no-set-upstream`, `--config/-c` |
 | `bg tag`           | List existing tags                                       | `--config/-c` |
-| `bg create-tag`    | Create lightweight or annotated tags                     | `--config/-c` |
-| `bg delete-tag`    | Delete a tag locally                                     | `--config/-c` |
+| `bg create-tag`    | Create lightweight or annotated tags and prompt to push  | `--remote/-r`, `--config/-c` |
+| `bg delete-tag`    | Delete a tag locally and optionally remove it remotely   | `--remote/-r`, `--config/-c` |
+| `bg delete-remote-tag` | Delete a tag directly on a remote                     | `--remote/-r`, `--config/-c` |
 
 ## Command reference
 
@@ -163,10 +165,13 @@ Pushes any branch without switching to it first. Useful for publishing fix branc
 Lists the tags returned by `git tag`. The output mirrors Git, which keeps scripts predictable. Pair it with `bg create-tag` or `bg delete-tag` to watch your release anchors.
 
 ### `bg create-tag`
-Creates a tag named `name`. Provide an optional positional message to make an annotated tag, for example `bg create-tag v2.1.2 "Release v2.1.2"`. Without a message the command falls back to a lightweight tag. Push the tag with `git push origin <tag>` (or `--tags`) when you are ready to share it.
+Creates a tag named `name`. Provide an optional positional message to make an annotated tag, for example `bg create-tag v2.1.2 "Release v2.1.2"`. Without a message BetterGit falls back to a lightweight tag. After creation BetterGit asks whether to push the tag to the selected remote (defaults to `origin`); use `--remote/-r` to target another remote or decline to keep it local.
 
 ### `bg delete-tag`
-Removes a local tag. If you deleted a tag that already lives on a remote, follow up with `git push origin --delete <tag>` to prune it on the server.
+Removes the local tag. If the tag is present on the selected remote (defaults to `origin`), BetterGit offers to delete it remotely as well. Use `--remote/-r` to choose another remote or decline to leave the remote tag untouched.
+
+### `bg delete-remote-tag`
+Deletes the tag directly on a remote without touching the local copy. Combine it with `--remote/-r` to target a remote other than `origin`.
 
 ## Typical workflows
 
@@ -191,9 +196,9 @@ bg delete-branch feature/payments --remote-delete
 ```bash
 bg create-tag v2.1.2 "Release v2.1.2"
 bg tag                # confirm the tag landed
-# git push origin v2.1.2   # share it when ready
+# answer "yes" when prompted to push to origin (or skip to keep it local)
 ```
-`bg create-tag` uses an annotated tag when you pass a message; skip the message to create a lightweight tag. Follow up with `bg delete-tag <name>` if you need to redo the release or clean a local tag.
+`bg create-tag` uses an annotated tag when you pass a message; skip the message to create a lightweight tag. You can push immediately by accepting the prompt or return later with `--remote` to pick a different target. Use `bg delete-tag <name>` and confirm the remote-removal prompt, or run `bg delete-remote-tag <name>` when you need to clean up.
 
 ## AI assistance for commit messages
 - LLM support is enabled by default. The default provider is `ollama` with model `phi3.5:3.8b`, temperature `0.1`, max tokens `256`.
