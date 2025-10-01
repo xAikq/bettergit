@@ -1,5 +1,9 @@
 # BetterGit Release Notes
 
+## v2.1.2 (2025-10-02)
+- `bg branches` is now `bg branch`.
+- Fixed misspelling of `create-tag` in `bettergit.core.gitio`.
+
 ## v2.1.1 (2025-10-02)
 - `bg create-tag` now asks whether to push the new tag to the selected remote (defaults to `origin`).
 - `bg delete-tag` detects matching remote tags, offers to delete them, and respects `--remote/-r`.

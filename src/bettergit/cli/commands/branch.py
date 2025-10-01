@@ -24,10 +24,10 @@ def _category_header(title: str, note: str | None) -> str:
 
 
 def register(app: typer.Typer) -> None:
-    """Register the `bg branches` command."""
+    """Register the `bg branch` command."""
 
-    @app.command("branches", help="Show a grouped, color-coded list of branches.")
-    def branches(
+    @app.command("branch", help="Show a grouped, color-coded list of branches.")
+    def branch(
         all_: bool = typer.Option(False, "--all", "-a", help="Include remote branches."),
         config_path: str | None = typer.Option(None, "--config", "-c", help="Path to a configuration file."),
     ) -> None:
@@ -36,10 +36,10 @@ def register(app: typer.Typer) -> None:
             current = gitio.current_branch()
             items = gitio.list_branches(all_=all_)
         except GitError as exc:
-            show_error("branches", message=str(exc))
+            show_error("branch", message=str(exc))
             raise typer.Exit(code=1)
 
-        show_success("branches", "list")
+        show_success("branch", "list")
         origins = branchmeta.load_all()
 
         current_lines: list[str] = []
