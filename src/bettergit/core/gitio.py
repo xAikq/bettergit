@@ -23,7 +23,7 @@ __all__ = [
     "push",
     "remote_branch_exists",
     "tag",
-    "crete_tag",
+    "create_tag",
     "delete_tag",
 ]
 

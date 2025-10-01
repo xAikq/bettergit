@@ -14,7 +14,7 @@ BetterGit (`bg`) is a productivity layer on top of Git. It keeps everyday tasks 
   - [`bg add`](#bg-add)
   - [`bg suggest`](#bg-suggest)
   - [`bg commit`](#bg-commit)
-  - [`bg branches`](#bg-branches)
+  - [`bg branch`](#bg-branch)
   - [`bg branch-info`](#bg-branch-info)
   - [`bg switch`](#bg-switch)
   - [`bg create-branch`](#bg-create-branch)
@@ -107,7 +107,7 @@ BetterGit can ask an LLM to draft commit messages. By default we talk to [Ollama
 | `bg add`           | Stage everything or specific paths                       | `--config/-c` |
 | `bg suggest`       | Interactive Conventional Commit recommendation           | `--llm/--no-llm`, `--config/-c` |
 | `bg commit`        | One-shot commit using the generated message              | `--llm/--no-llm`, `--config/-c` |
-| `bg branches`      | List branches (add remotes with `--all/-a`)              | `--all/-a`, `--config/-c` |
+| `bg branch`        | List branches (add remotes with `--all/-a`)              | `--all/-a`, `--config/-c` |
 | `bg branch-info`   | Show tracking target, ahead/behind, last commit summary  | `--branch/-b`, `--config/-c` |
 | `bg switch`        | Check out another branch                                 | `--config/-c` |
 | `bg create-branch` | Create a branch, optionally switch/overwrite             | `--from/-f`, `--no-switch`, `--force/-F`, `--config/-c` |
@@ -136,7 +136,7 @@ The `--llm` / `--no-llm` toggles override the default model usage for the curren
 ### `bg commit`
 Skips the interactive step and commits immediately after the message is generated. Ideal for automation or when you already trust the suggestion.
 
-### `bg branches`
+### `bg branch`
 Groups branches by category, marking the current one with `*` and highlighting local standalone branches, remote branches, remote HEAD pointers, and branches created via `bg create-branch --from`; derived branches also show their parent. Include `--all/-a` to show remote branches.
 
 ### `bg branch-info`

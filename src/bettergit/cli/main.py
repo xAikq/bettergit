@@ -8,7 +8,7 @@ from typer.core import TyperGroup
 from bettergit import __version__
 from bettergit.cli.commands.add import register as register_add
 from bettergit.cli.commands.branch_info import register as register_branch_info
-from bettergit.cli.commands.branches import register as register_branches
+from bettergit.cli.commands.branch import register as register_branch
 from bettergit.cli.commands.commit import register as register_commit
 from bettergit.cli.commands.create_branch import register as register_create_branch
 from bettergit.cli.commands.delete_branch import register as register_delete_branch
@@ -47,7 +47,7 @@ HELP_TEXT = textwrap.dedent(
 
     ----------------------------------------------------------------------
     Branch Management
-      bg branches       Grouped, color-coded view for current, standalone, derived, and remote branches (add --all/-a for remotes).
+      bg branch         Grouped, color-coded view for current, standalone, derived, and remote branches (add --all/-a for remotes).
       bg branch-info    Ahead/behind stats, tracking target, last commit snapshot.
       bg switch         Checkout another branch.
       bg create-branch  Start from HEAD by default; can switch automatically.
@@ -134,7 +134,7 @@ def main(
 register_add(app)
 register_suggest(app)
 register_commit(app)
-register_branches(app)
+register_branch(app)
 register_switch(app)
 register_branch_info(app)
 register_push(app)
