@@ -246,6 +246,13 @@ def tag() -> str:
     return output
 
 
+def find_tag(name: str, remote: str = "origin") -> str:
+    """Check if tag exists on remote."""
+
+    output = _run_git(["ls-remote", "--tags", remote, name])
+    return output
+
+
 def create_tag(name: str, message: str | None = None) -> None:
     """Create tag with a given name, optionally with message."""
 
@@ -255,7 +262,19 @@ def create_tag(name: str, message: str | None = None) -> None:
         _run_git(["tag", name])
 
 
+def push_tag(name: str, remote: str = "origin") -> None:
+    """Push your tag to remote."""
+
+    _run_git(["push", remote, name])
+
+
 def delete_tag(name: str) -> None:
     """Delete tag."""
 
     _run_git(["tag", "-d", name])
+
+
+def delete_remote_tag(name: str, remote: str = "origin") -> None:
+    """Delete tag from remote."""
+
+    _run_git(["push", "--delete", remote, name])
