@@ -1,5 +1,8 @@
 # BetterGit Release Notes
 
+## v2.1.4 (2025-10-10)
+- Cleaned up imports and registrations of commands in `main`.
+
 ## v2.1.3 (2025-10-02)
 - Added `bg delete-remote-branch` for remote-only branch cleanup.
 - Bumped the package version to 2.1.3 and refreshed documentation for the new command.
