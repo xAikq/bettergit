@@ -6,18 +6,11 @@ import typer
 from typer.core import TyperGroup
 
 from bettergit import __version__
-from bettergit.cli.commands.add import register as register_add
-from bettergit.cli.commands.branch_info import register as register_branch_info
-from bettergit.cli.commands.branch import register as register_branch
-from bettergit.cli.commands.commit import register as register_commit
-from bettergit.cli.commands.create_branch import register as register_create_branch
-from bettergit.cli.commands.delete_branch import register as register_delete_branch
-from bettergit.cli.commands.push import register as register_push
-from bettergit.cli.commands.suggest import register as register_suggest
-from bettergit.cli.commands.switch import register as register_switch
-from bettergit.cli.commands.tag import register as register_tag
-from bettergit.cli.commands.create_tag import register as register_create_tag
-from bettergit.cli.commands.delete_tag import register as register_delete_tag
+
+import importlib
+import bettergit.cli.commands as commands
+import pkgutil
+
 
 HELP_TEXT = textwrap.dedent(
     """
@@ -47,7 +40,8 @@ HELP_TEXT = textwrap.dedent(
 
     ----------------------------------------------------------------------
     Branch Management
-      bg branch         Grouped, color-coded view for current, standalone, derived, and remote branches (add --all/-a for remotes).
+      bg branch         Grouped, color-coded view for current, standalone, derived, 
+                          and remote branches (add --all/-a for remotes).
       bg branch-info    Ahead/behind stats, tracking target, last commit snapshot.
       bg switch         Checkout another branch.
       bg create-branch  Start from HEAD by default; can switch automatically.
@@ -85,15 +79,15 @@ class BetterGitGroup(TyperGroup):
     def format_help(self, ctx, formatter) -> None:  # type: ignore[override]
         formatter.write(HELP_TEXT)
         formatter.write("\n\nCommands\n")
-        commands: list[tuple[str, str]] = []
+        commands_list: list[tuple[str, str]] = []
         for name in self.list_commands(ctx):
             command = self.get_command(ctx, name)
             if command is None:
                 continue
-            commands.append((name, command.get_short_help_str()))
-        if commands:
-            width = max(len(name) for name, _ in commands)
-            for name, help_str in commands:
+            commands_list.append((name, command.get_short_help_str()))
+        if commands_list:
+            width = max(len(name) for name, _ in commands_list)
+            for name, help_str in commands_list:
                 formatter.write(f"  {name.ljust(width)}  {help_str}\n")
         else:
             formatter.write("  (no commands registered)\n")
@@ -111,14 +105,14 @@ app = typer.Typer(
 
 @app.callback(invoke_without_command=True)
 def main(
-    ctx: typer.Context,
-    version: bool = typer.Option(
-        False,
-        "--version",
-        "-V",
-        help="Show the BetterGit version and exit.",
-        is_eager=True,
-    ),
+        ctx: typer.Context,
+        version: bool = typer.Option(
+            False,
+            "--version",
+            "-V",
+            help="Show the BetterGit version and exit.",
+            is_eager=True,
+        ),
 ) -> None:
     """Top-level callback that powers global flags like --version."""
 
@@ -131,18 +125,11 @@ def main(
         raise typer.Exit()
 
 
-register_add(app)
-register_suggest(app)
-register_commit(app)
-register_branch(app)
-register_switch(app)
-register_branch_info(app)
-register_push(app)
-register_create_branch(app)
-register_delete_branch(app)
-register_tag(app)
-register_create_tag(app)
-register_delete_tag(app)
+for importer, module_name, is_pkg in pkgutil.iter_modules(commands.__path__):
+    full_module_name = f"bettergit.cli.commands.{module_name}"
+    module = importlib.import_module(full_module_name)
+    if hasattr(module, 'register'):
+        module.register(app)
 
 
 def run() -> None:
